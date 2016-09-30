@@ -1,11 +1,13 @@
 from registry import settings
-from PyQt5.QtWidgets import QWidget, QDesktopWidget
+from PyQt5.QtWidgets import QMainWindow, QDesktopWidget
+from PyQt5 import uic
+import exemap
 
-
-class MainFrame(QWidget):
+class MainFrame(QMainWindow):
     def __init__(self):
         super().__init__()
         self.initSettings()
+        uic.loadUi(exemap.get_file_name('mainwindow.ui'), self)
         self.initUI()
 
     def initSettings(self):
@@ -13,10 +15,7 @@ class MainFrame(QWidget):
             settings.edit_setting('state', 'set')
 
     def initUI(self):
-        self.resize(250, 150)
         self.center()
-
-        self.setWindowTitle('Center')
         self.show()
 
     def center(self):

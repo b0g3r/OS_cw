@@ -1,1 +1,3 @@
-import registry
+"""
+Working with GUI
+"""
