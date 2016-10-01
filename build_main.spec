@@ -7,9 +7,9 @@ block_cipher = None
 is_one_file = False
 
 a = Analysis(['main.py'],
-             pathex=['C:\\Python35-32\\Lib\\site-packages\\PyQt5\\Qt\\bin', 'C:\\Users\\kotvb_000\\PycharmProjects\\OS_kr'],
+             pathex=[os.getcwd()],
              binaries=[],
-             datas=[('*.ui', '.')],
+             datas=[('UI\\*.ui', 'UI')],
              hiddenimports=[],
              hookspath=[],
              runtime_hooks=[],
