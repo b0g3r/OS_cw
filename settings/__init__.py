@@ -6,7 +6,9 @@ REG_PATH = r'Software\OS_CW\Settings'
 
 default_settings = {
     'fullscreen': False,
-    'type_of_interpolation': 'string'
+    'type_of_interpolation': 'string',
+    'int': 14,
+    'float': '2.456'
 }
 
 
@@ -19,6 +21,7 @@ def edit_setting(name, value):
         value = int(value)
     elif isinstance(value, str):
         type_reg = winreg.REG_SZ
+        value = str(value)
     winreg.SetValueEx(key, name, 0, type_reg, value)
     winreg.CloseKey(key)
     return value

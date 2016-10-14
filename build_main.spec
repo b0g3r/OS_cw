@@ -1,10 +1,10 @@
 # -*- mode: python -*-
-import glob
+
 import os
 
 block_cipher = None
 
-is_one_file = False
+is_one_file = True
 
 a = Analysis(['main.py'],
              pathex=[os.getcwd()],
@@ -31,7 +31,7 @@ if is_one_file:
               debug=False,
               strip=False,
               upx=True,
-              console=False )
+              console=True )
 else:
     exe = EXE(pyz,
               a.scripts,
@@ -40,7 +40,7 @@ else:
               debug=False,
               strip=False,
               upx=True,
-              console=False)
+              console=True)
 
     coll = COLLECT(exe,
                    a.binaries,
