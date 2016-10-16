@@ -1,10 +1,13 @@
-from PyQt5.QtCore import QAbstractTableModel, QVariant, Qt
+from PyQt5.QtCore import QAbstractTableModel, QVariant, Qt, pyqtSignal
 
 
 class ChemicalProcess(QAbstractTableModel):
+    data_change = pyqtSignal(name='data_change')
+
     def __init__(self, parent):
         super(ChemicalProcess, self).__init__()
         self.gui = parent
+        self.data_change.connect(self.gui.initiate_view)
         self.x = tuple()
         self.y = tuple()
         self.x_label = 'x'
@@ -28,7 +31,6 @@ class ChemicalProcess(QAbstractTableModel):
             return QVariant()
 
     def headerData(self, p_int, Qt_Orientation, role=Qt.DisplayRole):
-
         if Qt_Orientation == Qt.Horizontal and role == Qt.DisplayRole:
             header = ''
             if p_int == 0:
@@ -41,14 +43,21 @@ class ChemicalProcess(QAbstractTableModel):
 
 
 class DeviationConcentration(ChemicalProcess):
-    def __init__(self, parent, data):
+    def __init__(self, parent):
         super().__init__(parent)
-        if self.validate_data(data):
-            self.set_data(data)
+        self.x_label = "мг/м^3"
+        self.y_label = "мм"
 
     def set_data(self, data):
-        self.x = data[0]
-        self.y = data[1]
+        if not self.validate_data(data):
+            self.gui.display_error('Неправильные входные данные')
+            return
+        self.y = data[0]
+        self.x = data[1]
+        self.data_change.emit()
+
+    def get_data(self):
+        return self.x, self.y
 
     def validate_data(self, data):
         if len(data) != 2:
@@ -57,6 +66,6 @@ class DeviationConcentration(ChemicalProcess):
             return False
         for column in data:
             for el in column:
-                if el is None or not (isinstance(el, int) or isinstance(el, float)):
-                    return None
+                if el is None or not isinstance(el, (int, float)):
+                    return False
         return True
