@@ -5,7 +5,6 @@ import os
 block_cipher = None
 
 is_one_file = True
-
 a = Analysis(['main.py'],
              pathex=[os.getcwd()],
              binaries=[],

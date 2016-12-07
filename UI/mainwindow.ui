@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>OS_CW</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout" stretch="3,7,5">
@@ -66,7 +66,7 @@
        <widget class="QGraphicsView" name="graphicsView_2"/>
       </item>
       <item>
-       <widget class="QTextEdit" name="textEdit"/>
+       <widget class="QTextEdit" name="text_errors"/>
       </item>
      </layout>
     </item>
@@ -91,6 +91,12 @@
     <property name="title">
      <string>Выполнить</string>
     </property>
+    <addaction name="action_step_back"/>
+    <addaction name="action_step_forward"/>
+    <addaction name="action_play"/>
+    <addaction name="separator"/>
+    <addaction name="action_5"/>
+    <addaction name="action_6"/>
    </widget>
    <widget class="QMenu" name="menu_3">
     <property name="title">
@@ -117,6 +123,31 @@
   <action name="action_openFile">
    <property name="text">
     <string>Открыть</string>
+   </property>
+  </action>
+  <action name="action_step_back">
+   <property name="text">
+    <string>Шаг назад</string>
+   </property>
+  </action>
+  <action name="action_step_forward">
+   <property name="text">
+    <string>Шаг вперед</string>
+   </property>
+  </action>
+  <action name="action_play">
+   <property name="text">
+    <string>Авто-выполнение</string>
+   </property>
+  </action>
+  <action name="action_5">
+   <property name="text">
+    <string>Повысить степень полинома</string>
+   </property>
+  </action>
+  <action name="action_6">
+   <property name="text">
+    <string>Понизить степень полинома</string>
    </property>
   </action>
  </widget>

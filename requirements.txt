@@ -1,6 +1,5 @@
 PyQt5
 matplotlib
-PyInstaller
+PyInstaller=3.3.dev0
 openpyxl
-scipy
 numpy

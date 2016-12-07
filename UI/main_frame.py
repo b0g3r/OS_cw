@@ -1,6 +1,6 @@
-from PyQt5.QtWidgets import QMainWindow, QDesktopWidget, QFileDialog
+from PyQt5.QtWidgets import QMainWindow, QDesktopWidget, QFileDialog, QMessageBox
 from PyQt5 import uic
-from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtCore import pyqtSlot, QTimer
 import exemap
 import os
 from openpyxl import load_workbook
@@ -33,14 +33,36 @@ class MainFrame(QMainWindow):
 
     def initUI(self):
         self.center()
+
+        self.error_dialog = QMessageBox()
+        self.error_dialog.setIcon(QMessageBox.Warning)
+
+        # коннект меню
+        self.action_step_back.triggered.connect(self.step_back)
+        self.action_step_forward.triggered.connect(self.step_forward)
         self.action_openFile.triggered.connect(self.load_data)
+        self.action_play.triggered.connect(self.start_play)
+
         self.tableView_data.setModel(model.ChemicalProcess(self))
         self.tableView_data.resizeColumnsToContents()
+
+        # график
+        self.verticalLayout_4.removeWidget(self.graphicsView_2)
+        self.graphicsView_2.deleteLater()
+        self.graphicsView_2 = None
+        self.errorbar = view.ErrorBar(self, dpi=80, text_view=self.text_errors)
+        self.verticalLayout_4.insertWidget(0, self.errorbar)
+
+        # диаграмма ошибок
         self.verticalLayout_2.removeWidget(self.graphicsView)
         self.graphicsView.deleteLater()
         self.graphicsView = None
-        self.mpl = view.MplCanvas(self, dpi=80)
+        self.mpl = view.PointPolyPlot(self, dpi=80, errorbar=self.errorbar)
         self.verticalLayout_2.insertWidget(0, self.mpl)
+
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.step_forward)
+
         self.show()
 
     def center(self):
@@ -50,8 +72,8 @@ class MainFrame(QMainWindow):
         self.move(qr.topLeft())
 
     def display_error(self, error):
-        print(error)
-        # TODO
+        self.error_dialog.setText(str(error))
+        self.error_dialog.exec_()
 
     def load_data(self):
         file_name = self.get_file_name()
@@ -76,15 +98,23 @@ class MainFrame(QMainWindow):
         self.horizontalSlider.valueChanged.connect(self.mpl.set_i)
         self.spinBox.valueChanged.connect(self.mpl.set_npoly)
 
+    def start_play(self):
 
-    def change_i(self, i):
-        self.mpl.set_i(i)
+        self.timer.start(1000)
+
+    def step_back(self):
+        self.horizontalSlider.setValue(self.horizontalSlider.value() - 1)
+
+    def step_forward(self):
+        i = self.horizontalSlider.value()
+        if i == self.horizontalSlider.maximum():
+            self.timer.stop()
+        self.horizontalSlider.setValue(self.horizontalSlider.value() + 1)
 
     @pyqtSlot(name='initiate_view')
     def initiate_view(self):
         self.tableView_data.setModel(self.model)
         self.mpl.set_data(*self.model.get_data())  # data - tuple of tuple_x and tuple_y
-        self.mpl.set_i(5)
         self.horizontalSlider.setMinimum(0)
         self.horizontalSlider.setMaximum(self.mpl.count_point)
 
