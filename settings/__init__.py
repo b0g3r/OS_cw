@@ -10,12 +10,13 @@ def str2bool(str):
 default_settings = {
     'fullscreen': (False, str2bool),
     'poly_n': (1, int),
-    'autostart': (True, str2bool)
+    'autoplay': (True, str2bool)
 }
 
 
 class Settings:
     def __init__(self):
+
         for key, (val, type_) in default_settings.items():
             try:
                 val = type_(self.get_setting(key))
@@ -30,7 +31,6 @@ class Settings:
         value = str(value)
         winreg.SetValueEx(key, name, 0, winreg.REG_SZ, value)
         winreg.CloseKey(key)
-        return value
 
     def get_setting(self, name):
         try:
@@ -41,6 +41,6 @@ class Settings:
             raise ValueError
         return value
 
-    def __setitem__(self, name, val):
+    def __setattr__(self, name, val):
         self.set_setting(name, val)
         self.__dict__[name] = val

@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QMainWindow, QDesktopWidget, QFileDialog, QMessageBox
+from PyQt5.QtWidgets import QMainWindow, QDesktopWidget, QFileDialog, QMessageBox, QApplication
 from PyQt5 import uic
 from PyQt5.QtCore import pyqtSlot, QTimer
 import exemap
@@ -29,13 +29,13 @@ def get_data_from_oscw(file_name):
 
 
 class MainFrame(QMainWindow):
+    EXIT_CODE_RESTART = 234
     def __init__(self):
         super().__init__()
         uic.loadUi(exemap.get_file_name(r'UI\mainwindow.ui'), self)
         self.initUI()
 
     def initUI(self):
-
         if settings.fullscreen:
             self.showMaximized()
         else:
@@ -49,6 +49,7 @@ class MainFrame(QMainWindow):
         self.action_step_forward.triggered.connect(self.step_forward)
         self.action_openFile.triggered.connect(self.load_data)
         self.action_play.triggered.connect(self.start_play)
+        self.action_openSettings.triggered.connect(self.open_settings)
 
         self.tableView_data.setModel(model.ChemicalProcess(self))
         self.tableView_data.resizeColumnsToContents()
@@ -129,3 +130,12 @@ class MainFrame(QMainWindow):
         file_name = QFileDialog.getOpenFileName(self, 'Открыть', os.getcwd(),
                                             'Table file (*.oscw, *.xlsx)')
         return file_name[0] or None
+
+    def open_settings(self):
+        """Вызыывает гуи настроек"""
+        from .settings_frame import SettingsFrame
+        sets = SettingsFrame()
+        sets.setModal(False)
+        # если 0 - отмена, если 1 - изменились настройки перезапустить программу
+        if sets.exec_() == 1:
+            QApplication.exit(self.EXIT_CODE_RESTART)
