@@ -86,6 +86,8 @@
      <string>Файл</string>
     </property>
     <addaction name="action_openFile"/>
+    <addaction name="action_saveReport"/>
+    <addaction name="action_openSettings"/>
    </widget>
    <widget class="QMenu" name="menu_2">
     <property name="title">
@@ -148,6 +150,21 @@
   <action name="action_6">
    <property name="text">
     <string>Понизить степень полинома</string>
+   </property>
+  </action>
+  <action name="action_4">
+   <property name="text">
+    <string>Отчёт</string>
+   </property>
+  </action>
+  <action name="action_saveReport">
+   <property name="text">
+    <string>Сохранить отчёт</string>
+   </property>
+  </action>
+  <action name="action_openSettings">
+   <property name="text">
+    <string>Настройки</string>
    </property>
   </action>
  </widget>

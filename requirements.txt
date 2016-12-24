@@ -3,3 +3,4 @@ matplotlib
 PyInstaller=3.3.dev0
 openpyxl
 numpy
+XlsxWriter

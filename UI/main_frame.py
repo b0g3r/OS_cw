@@ -5,6 +5,9 @@ import exemap
 import os
 from openpyxl import load_workbook
 from process import model, view
+from settings import Settings
+
+settings = Settings()
 
 def get_data_from_xlsx(file_name):
     try:
@@ -32,7 +35,11 @@ class MainFrame(QMainWindow):
         self.initUI()
 
     def initUI(self):
-        self.center()
+
+        if settings.fullscreen:
+            self.showMaximized()
+        else:
+            self.center()
 
         self.error_dialog = QMessageBox()
         self.error_dialog.setIcon(QMessageBox.Warning)
@@ -117,7 +124,6 @@ class MainFrame(QMainWindow):
         self.mpl.set_data(*self.model.get_data())  # data - tuple of tuple_x and tuple_y
         self.horizontalSlider.setMinimum(0)
         self.horizontalSlider.setMaximum(self.mpl.count_point)
-
 
     def get_file_name(self):
         file_name = QFileDialog.getOpenFileName(self, 'Открыть', os.getcwd(),

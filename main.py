@@ -1,17 +1,15 @@
 # -*- coding: utf-8 -*-
-import settings
+from settings import Settings
 import sys
 
 from UI.main_frame import MainFrame
 from PyQt5.QtWidgets import QApplication
 
-
+# todo: os.system('start "" "file.pdf"')
 
 
 if __name__ == '__main__':
 
-    settings = settings.get_settings()
-    print(settings)
     app = QApplication(sys.argv)
     ex = MainFrame()
 
