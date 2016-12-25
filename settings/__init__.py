@@ -15,8 +15,10 @@ default_settings = {
 
 
 class Settings:
+    fullscreen = 0
+    poly_n = 0
+    autoplay = 0
     def __init__(self):
-
         for key, (val, type_) in default_settings.items():
             try:
                 val = type_(self.get_setting(key))

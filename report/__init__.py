@@ -2,7 +2,8 @@ from openpyxl import Workbook
 
 from xlsxwriter import Workbook
 
-def create_report(data):
+
+def create(data):
     wb = Workbook('report.xlsx')
     ws = wb.add_worksheet()
     ws.write(0, 0, 'x')

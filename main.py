@@ -9,10 +9,6 @@ from PyQt5.QtWidgets import QApplication
 
 if __name__ == '__main__':
 
-
-
-
-
     current_exit_code = MainFrame.EXIT_CODE_RESTART
     while current_exit_code == MainFrame.EXIT_CODE_RESTART:
         app = QApplication(sys.argv)
@@ -28,6 +24,7 @@ if __name__ == '__main__':
         sys.excepthook = my_exception_hook
 
         current_exit_code = app.exec_()
-        app.exit()
+        ex.close()
         app = None
+        ex = None
 

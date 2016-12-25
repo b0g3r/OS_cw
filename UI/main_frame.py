@@ -1,13 +1,14 @@
 from PyQt5.QtWidgets import QMainWindow, QDesktopWidget, QFileDialog, QMessageBox, QApplication
 from PyQt5 import uic
-from PyQt5.QtCore import pyqtSlot, QTimer
+from PyQt5.QtCore import pyqtSlot, QTimer, QUrl
+from PyQt5.QtGui import QDesktopServices
 import exemap
 import os
 from openpyxl import load_workbook
 from process import model, view
 from settings import Settings
-
-settings = Settings()
+from .settings_frame import SettingsFrame
+import report
 
 def get_data_from_xlsx(file_name):
     try:
@@ -30,13 +31,16 @@ def get_data_from_oscw(file_name):
 
 class MainFrame(QMainWindow):
     EXIT_CODE_RESTART = 234
+
     def __init__(self):
+        self.settings = Settings()
         super().__init__()
         uic.loadUi(exemap.get_file_name(r'UI\mainwindow.ui'), self)
-        self.initUI()
+        self.init_ui()
 
-    def initUI(self):
-        if settings.fullscreen:
+
+    def init_ui(self):
+        if self.settings.fullscreen:
             self.showMaximized()
         else:
             self.center()
@@ -45,11 +49,15 @@ class MainFrame(QMainWindow):
         self.error_dialog.setIcon(QMessageBox.Warning)
 
         # коннект меню
+        self.action_openFile.triggered.connect(self.load_data)
+        self.action_openSettings.triggered.connect(self.open_settings)
+        self.action_saveReport.triggered.connect(self.create_report)
+
         self.action_step_back.triggered.connect(self.step_back)
         self.action_step_forward.triggered.connect(self.step_forward)
-        self.action_openFile.triggered.connect(self.load_data)
         self.action_play.triggered.connect(self.start_play)
-        self.action_openSettings.triggered.connect(self.open_settings)
+
+        self.action_openHelp.triggered.connect(self.open_help)
 
         self.tableView_data.setModel(model.ChemicalProcess(self))
         self.tableView_data.resizeColumnsToContents()
@@ -100,11 +108,24 @@ class MainFrame(QMainWindow):
         else:
             self.initiate_model(data)
 
+    def open_help(self):
+        QDesktopServices().openUrl(QUrl().fromLocalFile('chm.chm'))
+
+    def create_report(self):
+        """вызывает создание и сохранение отчета"""
+        if hasattr(self, 'model'):
+            report.create(self.mpl.get_all_data())
+        # TODO: сказать что отчёт сохранен
+
+
     def initiate_model(self, data):
         self.model = model.DeviationConcentration(self)
         self.model.set_data(data)
         self.horizontalSlider.valueChanged.connect(self.mpl.set_i)
         self.spinBox.valueChanged.connect(self.mpl.set_npoly)
+        self.spinBox.setValue(self.settings.poly_n)
+        if self.settings.autoplay:
+            self.start_play()
 
     def start_play(self):
 
@@ -133,7 +154,6 @@ class MainFrame(QMainWindow):
 
     def open_settings(self):
         """Вызыывает гуи настроек"""
-        from .settings_frame import SettingsFrame
         sets = SettingsFrame()
         sets.setModal(False)
         # если 0 - отмена, если 1 - изменились настройки перезапустить программу
