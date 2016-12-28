@@ -5,10 +5,10 @@ import os
 block_cipher = None
 
 is_one_file = False
-a = Analysis(['main.py'],
+a = Analysis(['os_cw.py'],
              pathex=[os.getcwd(), r'C:\Program Files (x86)\DrExplain'],
              binaries=[],
-             datas=[('UI\\*.ui', 'UI')],
+             datas=[('UI\\*.ui', 'UI'), ('ico.ico', '')],
              hiddenimports=['tkinter', 'tkinter.filedialog'],
              hookspath=[],
              runtime_hooks=[],
@@ -26,7 +26,7 @@ if is_one_file:
               a.binaries,
               a.zipfiles,
               a.datas,
-              name='main',
+              name='os_cw',
               debug=True,
               strip=False,
               icon='ico.ico',
@@ -36,7 +36,7 @@ else:
     exe = EXE(pyz,
               a.scripts,
               exclude_binaries=True,
-              name='main',
+              name='os_cw',
               debug=False,
               strip=False,
               upx=True,
@@ -49,4 +49,4 @@ else:
                    a.datas,
                    strip=False,
                    upx=True,
-                   name='main')
+                   name='os_cw')
