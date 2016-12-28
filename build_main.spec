@@ -4,12 +4,12 @@ import os
 
 block_cipher = None
 
-is_one_file = True
+is_one_file = False
 a = Analysis(['main.py'],
-             pathex=[os.getcwd()],
+             pathex=[os.getcwd(), r'C:\Program Files (x86)\DrExplain'],
              binaries=[],
              datas=[('UI\\*.ui', 'UI')],
-             hiddenimports=[],
+             hiddenimports=['tkinter', 'tkinter.filedialog'],
              hookspath=[],
              runtime_hooks=[],
              excludes=[],
@@ -27,8 +27,9 @@ if is_one_file:
               a.zipfiles,
               a.datas,
               name='main',
-              debug=False,
+              debug=True,
               strip=False,
+              icon='ico.ico',
               upx=True,
               console=True )
 else:
@@ -39,7 +40,8 @@ else:
               debug=False,
               strip=False,
               upx=True,
-              console=True)
+              console=False,
+              icon='ico.ico')
 
     coll = COLLECT(exe,
                    a.binaries,

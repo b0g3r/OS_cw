@@ -6,8 +6,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 import io
 
+
 def distance(points):
     return max(points) - min(points)
+
 
 class PointPolyPlot(FigureCanvas):
     """Ultimately, this is a QWidget (as well as a FigureCanvasAgg, etc.)."""
@@ -36,7 +38,6 @@ class PointPolyPlot(FigureCanvas):
                                    QSizePolicy.Expanding)
         FigureCanvas.updateGeometry(self)
 
-
     def set_data(self, x, y): #x_label, y_label,
         self.x = x
         self.y = y
@@ -63,10 +64,10 @@ class PointPolyPlot(FigureCanvas):
         elif self.i == 1:
             self.axes.plot(x, y, 'bo')
         else:
-            self.xnew = np.linspace(min(x), max(x), num=len(x)*10, endpoint=True)
+            xnew = np.linspace(min(x), max(x), num=len(x)*10, endpoint=True)
             self.fpoly = np.poly1d(np.polyfit(x, y, self.n_poly))
-            self.ynew = self.fpoly(self.xnew)
-            self.axes.plot(self.xnew, self.ynew, 'r--', x, y, 'bo')
+            ynew = self.fpoly(xnew)
+            self.axes.plot(xnew, ynew, 'r--', x, y, 'bo')
             self.axes.axis((min(x) - 0.05 * distance(x),
                             max(x) + 0.05 * distance(x),
                             min(y) - 0.05 * distance(y),
@@ -116,7 +117,6 @@ class ErrorBar(FigureCanvas):
         FigureCanvas.updateGeometry(self)
 
     def compute(self, i, x, y, fpoly):
-
         x = x[:i]
         y = y[:i]
         if i == 0 or i == 1:
