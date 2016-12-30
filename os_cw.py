@@ -6,17 +6,16 @@ from PyQt5.QtWidgets import QApplication
 from PyQt5.QtGui import QIcon
 import exemap
 from UI.reg_frame import RegFrame
-# TODO: os.system('start "" "file.pdf"')
 
 
 if __name__ == '__main__':
     current_exit_code = MainFrame.EXIT_CODE_RESTART
     app = QApplication(sys.argv)
     app.setWindowIcon(QIcon(exemap.get_file_name('ico.ico')))
-
     reg = RegFrame()
     if reg.exec_() == 1:
         while current_exit_code == MainFrame.EXIT_CODE_RESTART:
+
             ex = MainFrame(*sys.argv[1:])
             sys._excepthook = sys.excepthook
 
@@ -30,5 +29,4 @@ if __name__ == '__main__':
 
             current_exit_code = app.exec_()
             ex.close()
-            app = None
             ex = None

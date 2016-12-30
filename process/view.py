@@ -128,7 +128,17 @@ class ErrorBar(FigureCanvas):
                             min(y) - 0.05 * distance(y),
                             max(y) + 0.05 * distance(y)))
         self.draw()
-        self.text_view.setText('Среднеквадратичное отклонение: {:.4f}'.format(self.calculate_error(y, fpoly(x))))
+        polynom = ''
+        for n, coeff in enumerate(fpoly.coeffs):
+            if n == 0:
+                polynom += '{:.4f} + '.format(coeff)
+            elif n == 1:
+                polynom += '{:.4f}*x + '.format(coeff)
+            else:
+                polynom += '{:.4f}*x**{} + '.format(coeff, n)
+        polynom = polynom[:-3]
+        self.text_view.setText('Среднеквадратичное отклонение: {:.4f}\n'\
+                               'f(x)={}'.format(self.calculate_error(y, fpoly(x)), polynom))
 
     def calculate_error(self, y, y_a):
         if len(y) > 1:

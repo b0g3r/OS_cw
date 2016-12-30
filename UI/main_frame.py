@@ -56,6 +56,7 @@ class MainFrame(QMainWindow):
 
         self.error_dialog = QMessageBox()
         self.error_dialog.setIcon(QMessageBox.Warning)
+        self.error_dialog.setWindowTitle("Ошибка")
 
         # коннект меню
         self.action_openFile.triggered.connect(self.load_data, no_receiver_check=False)

@@ -72,7 +72,11 @@
        <widget class="QGraphicsView" name="graphicsView_2"/>
       </item>
       <item>
-       <widget class="QTextEdit" name="text_errors"/>
+       <widget class="QTextEdit" name="text_errors">
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
       </item>
      </layout>
     </item>
